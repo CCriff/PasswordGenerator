@@ -28,6 +28,9 @@ repositories {
 
 // Dependencies required for the project
 dependencies {
+    implementation("org.springframework.boot:spring-boot-starter-jdbc")
+    implementation("com.h2database:h2")
+    implementation("org.springframework.security:spring-security-crypto:5.4.0")
     // Spring Boot starter for JPA data access
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     // Spring Boot starter for security
@@ -58,6 +61,8 @@ dependencies {
     implementation("org.apache.commons:commons-lang3")
     // Jackson for data binding and serialization/deserialization
     implementation("com.fasterxml.jackson.core:jackson-databind")
+    implementation("jakarta.validation:jakarta.validation-api:3.0.2")
+
 }
 
 // Task configuration for JUnit tests
