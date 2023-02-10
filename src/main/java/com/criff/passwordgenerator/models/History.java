@@ -1,55 +1,61 @@
 package com.criff.passwordgenerator.models;
 
 import jakarta.persistence.*;
-import org.hibernate.annotations.CreationTimestamp;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "History")
 public class History {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name = "ID")
+    private int id;
 
-    @Column(name = "Old_password", nullable = false, length = 128)
-    private String oldPassword;
+    @Column(name = "Old_hashed_password")
+    private String oldHashedPassword;
 
-    @Column(name = "New_password", nullable = false, length = 128)
-    private String newPassword;
+    @Column(name = "New_hashed_password")
+    private String newHashedPassword;
 
-    @ManyToOne
-    @JoinColumn(name = "Account_id", nullable = false)
+    @Column(name = "Created_at")
+    private LocalDateTime createdAt;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "Account_id")
     private Account account;
 
-    @Column(name = "Created_at", nullable = false, updatable = false)
-    @CreationTimestamp
-    private Timestamp createdAt;
-
-    // Getters and Setters
-
-    public Long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
-    public String getOldPassword() {
-        return oldPassword;
+    public String getOldHashedPassword() {
+        return oldHashedPassword;
     }
 
-    public void setOldPassword(String oldPassword) {
-        this.oldPassword = oldPassword;
+    public void setOldHashedPassword(String oldHashedPassword) {
+        this.oldHashedPassword = oldHashedPassword;
     }
 
-    public String getNewPassword() {
-        return newPassword;
+    public String getNewHashedPassword() {
+        return newHashedPassword;
     }
 
-    public void setNewPassword(String newPassword) {
-        this.newPassword = newPassword;
+    public void setNewHashedPassword(String newHashedPassword) {
+        this.newHashedPassword = newHashedPassword;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
     }
 
     public Account getAccount() {
@@ -59,12 +65,6 @@ public class History {
     public void setAccount(Account account) {
         this.account = account;
     }
-
-    public Timestamp getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(Timestamp createdAt) {
-        this.createdAt = createdAt;
-    }
 }
+
+

@@ -1,26 +1,29 @@
 package com.criff.passwordgenerator.models;
 
+
 import jakarta.persistence.*;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "Failed_login_attempts")
 public class FailedLoginAttempt {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // The username of the account associated with the failed login attempt
-    @Column(name = "Account_username", nullable = false)
-    private String username;
+    private String accountUsername;
+    private int failedAttempts;
+    private LocalDateTime createdAt;
 
-    // The timestamp of the failed login attempt
-    @Column(name = "Failed_attempt_timestamp", nullable = false)
-    private Timestamp attemptTime;
+    public FailedLoginAttempt() {
+    }
 
-    // Getter and setter methods
+    public FailedLoginAttempt(String accountUsername, int failedAttempts, LocalDateTime createdAt) {
+        this.accountUsername = accountUsername;
+        this.failedAttempts = failedAttempts;
+        this.createdAt = createdAt;
+    }
 
     public Long getId() {
         return id;
@@ -30,19 +33,28 @@ public class FailedLoginAttempt {
         this.id = id;
     }
 
-    public String getUsername() {
-        return username;
+    public String getAccountUsername() {
+        return accountUsername;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setAccountUsername(String accountUsername) {
+        this.accountUsername = accountUsername;
     }
 
-    public Timestamp getAttemptTime() {
-        return attemptTime;
+    public int getFailedAttempts() {
+        return failedAttempts;
     }
 
-    public void setAttemptTime(Timestamp attemptTime) {
-        this.attemptTime = attemptTime;
+    public void setFailedAttempts(int failedAttempts) {
+        this.failedAttempts = failedAttempts;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
     }
 }
+

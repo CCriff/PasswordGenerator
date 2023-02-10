@@ -2,76 +2,107 @@ package com.criff.passwordgenerator.models;
 
 import jakarta.persistence.*;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "Password_reset_requests")
 public class PasswordResetRequest {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name = "ID")
+    private long id;
 
-    @Column(name = "Email", nullable = false, unique = true)
+    @Column(name = "Email", nullable = false)
     private String email;
 
-    @Column(name = "Token", nullable = false, unique = true)
+    @Column(name = "Token", nullable = false)
     private String token;
 
-    @Column(name = "Expiry_time", nullable = false)
-    private Timestamp expiryTime;
+    @Column(name = "Expiration_date", nullable = false)
+    private LocalDateTime expirationDate;
 
-    @ManyToOne
-    @JoinColumn(name = "User_id", nullable = false)
-    private User user;
+    @Enumerated(EnumType.ORDINAL)
+    @Column(name = "Used", nullable = false)
+    private RequestStatus used;
 
-// Getters and Setters
+    @Column(name = "Created_at", nullable = false)
+    private LocalDateTime createdAt;
 
-    public Long getId() {
-        return id;
+    public PasswordResetRequest() {
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public PasswordResetRequest(String email, String token, LocalDateTime expirationDate) {
+        this.email = email;
+        this.token = token;
+        this.expirationDate = expirationDate;
+    }
+
+    @PrePersist
+    public void setCreatedAt() {
+        this.createdAt = LocalDateTime.now();
+    }
+
+    public boolean isExpired() {
+        return LocalDateTime.now().isAfter(expirationDate);
+    }
+
+    public boolean isValid() {
+        return !isExpired() && used == RequestStatus.UNUSED;
+    }
+
+    public void markAsUsed() {
+        this.used = RequestStatus.USED;
+    }
+
+    // getters
+
+    public long getId() {
+        return id;
     }
 
     public String getEmail() {
         return email;
     }
 
-    public void setEmail(String email) {
-        this.email = email.toLowerCase().trim();
-    }
-
     public String getToken() {
         return token;
     }
 
+    public LocalDateTime getExpirationDate() {
+        return expirationDate;
+    }
+
+    public RequestStatus getUsed() {
+        return used;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    // setters
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     public void setToken(String token) {
-        this.token = token.trim();
+        this.token = token;
     }
 
-    public Timestamp getExpiryTime() {
-        return expiryTime;
+    public void setExpirationDate(LocalDateTime expirationDate) {
+        this.expirationDate = expirationDate;
     }
 
-    public void setExpiryTime(Timestamp expiryTime) {
-        this.expiryTime = expiryTime;
+    public void setUsed(RequestStatus used) {
+        this.used = used;
     }
 
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-// Other methods
-
-    @PrePersist
-    public void prepareDataForPersistence() {
-        setEmail(email);
-        setToken(token);
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
     }
 }
-

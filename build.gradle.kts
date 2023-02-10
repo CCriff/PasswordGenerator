@@ -62,6 +62,9 @@ dependencies {
     // Jackson for data binding and serialization/deserialization
     implementation("com.fasterxml.jackson.core:jackson-databind")
     implementation("jakarta.validation:jakarta.validation-api:3.0.2")
+    implementation("org.apache.logging.log4j:log4j-core:2.19.0")
+    implementation("org.slf4j:slf4j-api:1.7.30")
+    implementation("ch.qos.logback:logback-classic:1.2.3")
 
 }
 

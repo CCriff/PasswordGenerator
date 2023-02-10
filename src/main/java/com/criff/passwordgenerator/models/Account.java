@@ -1,63 +1,53 @@
 package com.criff.passwordgenerator.models;
 
 import jakarta.persistence.*;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
+import jakarta.validation.constraints.NotBlank;
 
-import java.sql.Timestamp;
-import java.util.List;
+import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "accounts")
+@Table(name = "Accounts")
 public class Account {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private int id;
 
+    @NotBlank
     @Enumerated(EnumType.STRING)
-    @Column(name = "account_type", nullable = false)
+    @Column(name = "Account_type")
     private AccountType accountType;
 
-    @Column(name = "account_username", nullable = false)
+    @NotBlank
+    @Column(name = "Account_username", unique = true)
     private String accountUsername;
 
-    @Column(name = "account_password", nullable = false)
-    private String encryptedAccountPassword;
+    @NotBlank
+    @Column(name = "Hashed_account_password")
+    private String hashedAccountPassword;
 
-    @Column(name = "expiry_date", nullable = false)
-    private Timestamp expiryDate;
+    @Column(name = "Expiry_date")
+    private LocalDateTime expiryDate;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+    @Column(name = "User_id")
+    private int userId;
 
-    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL)
-    private List<History> histories;
+    @Column(name = "Created_at")
+    private LocalDateTime createdAt;
 
-    @Column(name = "created_at", nullable = false, updatable = false)
-    @CreationTimestamp
-    private Timestamp createdAt;
-
-    @Column(name = "updated_at", nullable = false)
-    @UpdateTimestamp
-    private Timestamp updatedAt;
+    @Column(name = "Updated_at")
+    private LocalDateTime updatedAt;
 
     public Account() {
     }
 
-    public Account(AccountType accountType, String accountUsername, String encryptedAccountPassword, Timestamp expiryDate, User user) {
-        this.accountType = accountType;
-        this.accountUsername = accountUsername;
-        this.encryptedAccountPassword = encryptedAccountPassword;
-        this.expiryDate = expiryDate;
-        this.user = user;
-    }
+    // Getters and setters
 
-    public Long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -77,43 +67,43 @@ public class Account {
         this.accountUsername = accountUsername;
     }
 
-    public String getEncryptedAccountPassword() {
-        return encryptedAccountPassword;
+    public String getHashedAccountPassword() {
+        return hashedAccountPassword;
     }
 
-    public void setEncryptedAccountPassword(String encryptedAccountPassword) {
-        this.encryptedAccountPassword = encryptedAccountPassword;
+    public void setHashedAccountPassword(String hashedAccountPassword) {
+        this.hashedAccountPassword = hashedAccountPassword;
     }
 
-    public Timestamp getExpiryDate() {
+    public LocalDateTime getExpiryDate() {
         return expiryDate;
     }
 
-    public void setExpiryDate(Timestamp expiryDate) {
+    public void setExpiryDate(LocalDateTime expiryDate) {
         this.expiryDate = expiryDate;
     }
 
-    public User getUser() {
-        return user;
+    public int getUserId() {
+        return userId;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 
-    public List<History> getHistories() {
-        return histories;
-    }
-
-    public void setHistories(List<History> histories) {
-        this.histories = histories;
-    }
-
-    public Timestamp getCreatedAt() {
+    public LocalDateTime getCreatedAt() {
         return createdAt;
     }
 
-    public Timestamp getUpdatedAt() {
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
         return updatedAt;
+    }
+
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
     }
 }

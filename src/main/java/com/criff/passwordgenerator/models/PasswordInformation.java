@@ -1,51 +1,46 @@
 package com.criff.passwordgenerator.models;
 
 import jakarta.persistence.*;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 
-import java.sql.Timestamp;
+import java.util.Date;
+
 
 @Entity
-@Table(name = "password_generation_information")
+@Table(name = "Password_generation_information")
 public class PasswordInformation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Long id;
+    @Column(name = "ID")
+    private Integer id;
 
-    @Column(name = "password_length", nullable = false)
-    private int passwordLength;
+    @Column(name = "Password_length")
+    private Integer passwordLength;
 
+    @Column(name = "Password_complexity")
     @Enumerated(EnumType.STRING)
-    @Column(name = "password_complexity", nullable = false)
     private PasswordComplexity passwordComplexity;
 
+    @Column(name = "Expiry_policy")
     @Enumerated(EnumType.STRING)
-    @Column(name = "expiry_policy", nullable = false)
     private ExpiryPolicy expiryPolicy;
 
-    @Column(name = "created_at", nullable = false, updatable = false)
-    @CreationTimestamp
-    private Timestamp createdAt;
+    @Column(name = "Created_at")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date createdAt;
 
-    @Column(name = "updated_at", nullable = false)
-    @UpdateTimestamp
-    private Timestamp updatedAt;
-
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
-    public int getPasswordLength() {
+    public Integer getPasswordLength() {
         return passwordLength;
     }
 
-    public void setPasswordLength(int passwordLength) {
+    public void setPasswordLength(Integer passwordLength) {
         this.passwordLength = passwordLength;
     }
 
@@ -65,12 +60,13 @@ public class PasswordInformation {
         this.expiryPolicy = expiryPolicy;
     }
 
-    public Timestamp getCreatedAt() {
+    public Date getCreatedAt() {
         return createdAt;
     }
 
-    public Timestamp getUpdatedAt() {
-        return updatedAt;
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
     }
 }
+
 

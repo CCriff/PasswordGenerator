@@ -1,5 +1,5 @@
 package com.criff.passwordgenerator.models;
 
 public enum ExpiryPolicy {
-    MONTHLY, QUARTERLY, YEARLY
+    NEVER, DAILY, WEEKLY, SEMIWEEKLY, MONTHLY, QUARTERLY, YEARLY
 }

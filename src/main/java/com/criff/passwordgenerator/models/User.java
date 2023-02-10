@@ -1,241 +1,94 @@
 package com.criff.passwordgenerator.models;
 
-
-import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
-
-
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 
+import jakarta.persistence.*;
 import org.mindrot.jbcrypt.BCrypt;
 
-/**
- * The `User` class represents a user in the system.
- */
+import java.time.LocalDateTime;
+
 @Entity
-@Table(name = "User")
+@Table(name = "Users", schema = "PasswordGeneratorSchema")
 public class User {
 
-    /**
-     * The unique identifier for the user.
-     */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name = "ID")
+    private Integer id;
 
-    /**
-     * The name of the user.
-     */
-    @Column(name = "Username", nullable = false)
-    @NotBlank
+    @Column(name = "Name")
     private String name;
 
-    /**
-     * The email address of the user.
-     */
-    @Column(name = "Email", nullable = false, unique = true)
-    @Email
-    @NotBlank
+    @Column(name = "Email", unique = true)
     private String email;
 
-    /**
-     * The password of the user.
-     */
-    @Column(name = "Password", nullable = false)
-    @NotBlank
-    @Size(min = 8)
-    private String password;
+    @Column(name = "Hashed_password")
+    private String hashedPassword;
 
-    /**
-     * The timestamp of when the user was created.
-     */
-    @Column(name = "createdAt", nullable = false, updatable = false)
-    @CreationTimestamp
-    private Timestamp createdAt;
+    @Column(name = "Created_at")
+    private LocalDateTime createdAt;
 
-    /**
-     * The timestamp of when the user was last updated.
-     */
-    @Column(name = "UpdatedAt", nullable = false)
-    @UpdateTimestamp
-    private Timestamp updatedAt;
+    @Column(name = "Updated_at")
+    private LocalDateTime updatedAt;
 
-    /**
-     * A list of accounts associated with the user.
-     */
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<Account> accounts;
-
-    /**
-     * A list of password reset requests associated with the user.
-     */
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<PasswordResetRequest> passwordResetRequests;
-
-    /**
-     * No-arg constructor for the `User` class.
-     */
     public User() {
+        // Default constructor for Hibernate
     }
 
-    /**
-     * Returns the unique identifier for the user.
-     *
-     * @return the unique identifier for the user
-     */
-    public Long getId() {
+    public User(String name, String email, String hashedPassword) {
+        this.name = name;
+        this.email = email;
+        this.hashedPassword = hashedPassword;
+    }
+
+    public Integer getId() {
         return id;
     }
 
-    /**
-     * Sets the unique identifier for the user.
-     *
-     * @param id the unique identifier for the user
-     */
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
-    /**
-     * Returns the name of the user.
-     *
-     * @return the name of the user
-     */
     public String getName() {
         return name;
     }
 
-    /**
-     * Sets the name of the user.
-     *
-     * @param name the name of the user
-     */
     public void setName(String name) {
         this.name = name;
     }
 
-    /**
-     * Returns the email address of the user.
-     *
-     * @return the email address of the user
-     */
     public String getEmail() {
         return email;
     }
 
-    /**
-     * Sets the email address of the user.
-     *
-     * @param email the email address of the user
-     */
     public void setEmail(String email) {
         this.email = email;
     }
 
-    /**
-     * Returns the password of the user.
-     *
-     * @return the password of the user
-     */
-    public String getPassword() {
-        return password;
+    public String getHashedPassword() {
+        return hashedPassword;
     }
 
-    /**
-     * Sets the password of the user.
-     *
-     * @param password the password of the user
-     */
-    public void setPassword(String password) {
-        this.password = BCrypt.hashpw(password, BCrypt.gensalt());
+    public void setHashedPassword(String hashedPassword) {
+        this.hashedPassword = hashedPassword;
     }
 
-    /**
-     * Returns the timestamp of when the user was created.
-     *
-     * @return the timestamp of when the user was created
-     */
-    public Timestamp getCreatedAt() {
+    public LocalDateTime getCreatedAt() {
         return createdAt;
     }
 
-    /**
-     * Sets the timestamp of when the user was created.
-     *
-     * @param createdAt the timestamp of when the user was created
-     */
-    public void setCreatedAt(Timestamp createdAt) {
+    public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
     }
 
-    /**
-     * Returns the timestamp of when the user was last updated.
-     *
-     * @return the timestamp of when the user was last updated
-     */
-    public Timestamp getUpdatedAt() {
+    public LocalDateTime getUpdatedAt() {
         return updatedAt;
     }
 
-    /**
-     * Sets the timestamp of when the user was last updated.
-     *
-     * @param updatedAt the timestamp of when the user was last updated
-     */
-    public void setUpdatedAt(Timestamp updatedAt) {
+    public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
     }
-
-    /**
-     * Returns a list of accounts associated with the user.
-     *
-     * @return a list of accounts associated with the user
-     */
-    public List<Account> getAccounts() {
-        return accounts;
-    }
-
-    /**
-     * /**
-     * <p>
-     * Sets a list of accounts associated with the user.
-     *
-     * @param accounts a list of accounts associated with the user
-     */
-    public void setAccounts(List<Account> accounts) {
-        this.accounts = accounts;
-    }
-
-    /**
-     * Returns a list of password reset requests associated with the user.
-     *
-     * @return a list of password reset requests associated with the user
-     */
-    public List<PasswordResetRequest> getPasswordResetRequests() {
-        return passwordResetRequests;
-    }
-
-    /**
-     * Sets a list of password reset requests associated with the user.
-     *
-     * @param passwordResetRequests a list of password reset requests associated with the user
-     */
-    public void setPasswordResetRequests(List<PasswordResetRequest> passwordResetRequests) {
-        this.passwordResetRequests = passwordResetRequests;
-    }
-
-    /**
-     * Verifies if the provided password matches the user's password.
-     *
-     * @param password the password to verify
-     * @return true if the provided password matches the user's password, false otherwise
-     */
-    public boolean verifyPassword(String password) {
-        return BCrypt.checkpw(password, this.password);
-    }
 }
+
